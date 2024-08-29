@@ -51,9 +51,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_post'])) {
 }
 ?>
 
-<!-- HTML FORM FOR EDITING THE POST -->
-<form action="edit_post.php?id=<?php echo $post_id; ?>" method="POST" enctype="multipart/form-data">
-    <textarea name="content" required><?php echo htmlspecialchars($post['content']); ?></textarea>
-    <input type="file" name="image">
-    <button type="submit" name="edit_post">Save Changes</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Edit Post</h2>
+
+        <!-- Display success or error messages -->
+        <?php if (isset($_SESSION['success_message'])): ?>
+            <div class="alert alert-success" role="alert">
+                <?php echo $_SESSION['success_message'];
+                unset($_SESSION['success_message']); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error_message'])): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $_SESSION['error_message'];
+                unset($_SESSION['error_message']); ?>
+            </div>
+        <?php endif; ?>
+
+        <form action="edit_post.php?id=<?php echo $post_id; ?>" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="content" class="form-label">Edit Content</label>
+                <textarea name="content" id="content" class="form-control" rows="4" required><?php echo htmlspecialchars($post['content']); ?></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Upload New Image (optional)</label>
+                <input type="file" name="image" id="image" class="form-control">
+                <?php if ($post['image']): ?>
+                    <div class="mt-2">
+                        <img src="<?php echo htmlspecialchars($post['image']); ?>" alt="Current Post Image" class="img-fluid" style="max-width: 100%;">
+                    </div>
+                <?php endif; ?>
+            </div>
+            <button type="submit" name="edit_post" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
