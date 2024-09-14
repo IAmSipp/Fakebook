@@ -59,20 +59,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_post'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Post</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #4267b2;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            font-weight: bold;
+        }
+
+        .container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            font-weight: bold;
+        }
+
+        .alert {
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container mt-5">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Fakebook</a>
+        </div>
+    </nav>
+
+    <div class="container">
         <h2>Edit Post</h2>
 
-        <!-- Display success or error messages -->
-        <?php if (isset($_SESSION['success_message'])): ?>
-            <div class="alert alert-success" role="alert">
-                <?php echo $_SESSION['success_message'];
-                unset($_SESSION['success_message']); ?>
-            </div>
-        <?php endif; ?>
-
+        <!-- DISPLAY ERROR MESSAGES -->
         <?php if (isset($_SESSION['error_message'])): ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $_SESSION['error_message'];

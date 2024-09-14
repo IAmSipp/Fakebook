@@ -18,7 +18,6 @@ $stmt = $conn->prepare($user_query);
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
-
 ?>
 
 <!DOCTYPE html>
@@ -29,15 +28,107 @@ $user = $stmt->get_result()->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Posts</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Custom CSS for Facebook-like styling */
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .navbar {
+            background-color: #4267b2;
+            color: white;
+            padding-left: 20%;
+        }
+
+        .navbar a {
+            color: white;
+            font-weight: bold;
+        }
+
+        .sidebar {
+            background-color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            padding-top: 20px;
+            border-right: 1px solid #ddd;
+        }
+
+        .main-content {
+            margin-left: 20%;
+            margin-top: 20px;
+        }
+
+        .posts-container {
+            margin-left: 3%;
+        }
+
+        .post {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .post img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .post .btn {
+            margin-top: 10px;
+        }
+
+        .comment-form textarea {
+            text-transform: uppercase;
+        }
+
+        .post-comments {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn-primary,
+        .btn-danger,
+        .btn-secondary {
+            font-weight: bold;
+        }
+
+        .btn-close {
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Fakebook</a>
+        </div>
+    </nav>
+
     <div class="container-fluid">
         <div class="row">
             <!-- SIDEBAR -->
-            <nav class="col-md-3 col-lg-2 d-md-block bg-dark text-white p-3 vh-100 position-fixed">
+            <nav class="sidebar">
                 <div class="user-profile text-center mb-4">
+                    <img src="https://via.placeholder.com/150" alt="User" class="img-fluid rounded-circle mb-3" style="width: 120px;">
                     <h4><?php echo "Profile: " . "<b>" . htmlspecialchars($user['username']) . "</b>"; ?></h4>
+                    <hr>
                 </div>
                 <div class="d-grid gap-2">
                     <a href="create_post.php" class="btn btn-primary mb-2">Create New Post</a>
@@ -46,7 +137,7 @@ $user = $stmt->get_result()->fetch_assoc();
             </nav>
 
             <!-- MAIN CONTENT -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-4 mt-3" style="margin-left: 250px;">
+            <main class="main-content col-md-9 ms-sm-auto col-lg-10 px-4 mt-3">
                 <div class="posts-container">
                     <?php if ($result->num_rows > 0): ?>
                         <?php while ($post = $result->fetch_assoc()): ?>
@@ -66,7 +157,7 @@ $user = $stmt->get_result()->fetch_assoc();
                                 <?php endif; ?>
                                 <p class="text-muted">Posted on: <?php echo $post['created_at']; ?></p>
 
-                                <!-- Like/Unlike Button -->
+                                <!-- LIKE/UNLIKE BUTTON -->
                                 <form method="POST" action="like_post.php" class="d-inline">
                                     <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                                     <button type="submit" class="btn btn-<?php echo $user_liked ? 'danger' : 'primary'; ?> btn-sm">
@@ -85,31 +176,30 @@ $user = $stmt->get_result()->fetch_assoc();
                                     <form method="POST" action="post_comment.php">
                                         <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                                         <div class="mb-1">
-                                            <textarea name="content" id="comment" class="form-control" rows="2" placeholder="Write your comment here..." required></textarea>
+                                            <textarea name="content" id="comment" class="form-control" rows="2" placeholder="WRITE YOUR COMMENT HERE..." required></textarea>
                                         </div>
                                         <button type="submit" class="btn btn-primary py-0"><small>Submit</small></button>
                                     </form>
                                 </div>
 
                                 <!-- SHOW MORE COMMENTS BUTTON -->
-                                <div class="mt-1">
-                                    <a href="comment.php?post_id=<?php echo $post['id']; ?>" class="btn btn-secondary btn-sm p-0 px-1">Show More Comments ></a>
+                                <div class="mt-1 post-comments">
+                                    <a href="comment.php?post_id=<?php echo $post['id']; ?>" class="btn btn-secondary btn-sm p-0 px-1">SHOW MORE COMMENTS ></a>
                                 </div>
                             </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <div class="card text-center p-4">
+                            <div class="card-body">
+                                <h5 class="card-title">No content</h5>
+                                <p class="card-text">There are no posts available at the moment. Be the first to create one!</p>
+                                <a href="create_post.php" class="btn btn-primary">Create New Post</a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <div class="card text-center p-4">
-                <div class="card-body">
-                    <h5 class="card-title">No content</h5>
-                    <p class="card-text">There are no posts available at the moment. Be the first to create one!</p>
-                    <a href="create_post.php" class="btn btn-primary">Create New Post</a>
-                </div>
-            </div>
-        <?php endif; ?>
+            </main>
         </div>
-        </main>
-    </div>
     </div>
 
     <script src="js/bootstrap.bundle.min.js"></script>

@@ -56,13 +56,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_post'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .navbar {
+            background-color: #4267b2;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            font-weight: bold;
+        }
+
+        .container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            font-weight: bold;
+        }
+
+        .alert {
+            margin-top: 10px;
+        }
+
+        /* Style for back arrow link */
+        .back-arrow {
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: #4267b2;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .back-arrow:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Fakebook</a>
+        </div>
+    </nav>
+
     <div class="container mt-5">
+        <!-- BACK ARROW LINK -->
+        <a href="index.php" class="back-arrow">&larr; Back</a>
+
         <h2>Create a New Post</h2>
 
-        <!-- Display success or error messages -->
+        <!-- DISPLAY SUCCESS OR ERROR MESSAGES -->
         <?php if (isset($_SESSION['success_message'])): ?>
             <div class="alert alert-success" role="alert">
                 <?php echo $_SESSION['success_message'];
